@@ -7,19 +7,28 @@ import datetime
 from selenium.webdriver.support.ui import Select
 import sys
 
+
+
 #import login details
 from config import *
+#for testing
+#from configtest import *
+
 
 version = "Beta 0.1"
 # lazypay built by Jonathan Edwards because 
 # typing in your sign on and off times is just too hard.
-# Visit lhttps://www.lazypay.xyz
+# Visit https://www.lazypay.xyz
+
+# This would not have been possible without the amazing work
+# of the Hyperchiecken Pay Calculator by Petar Stankovic
+# https://hyperchicken.com/paycalc/
 
 #requirements
 #python 3.8 + https://www.python.org/downloads/
 #Selenium https://pypi.org/project/selenium/
 #Google Chrome https://www.google.com.au/chrome/
-#Chrome Driver
+#Chrome Driver https://chromedriver.chromium.org/downloads
 
 #font ogre
 
@@ -42,15 +51,17 @@ GO_SLEEP_TIME = loading_speed
 #you should be able to leave emoty if webdriver is in the same folder as lazypay.py
 path = ""
 
+def printLogo():
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("   __                     ___            ")
+    print("  / /  __ _ _____   _    / _ \__ _ _   _ ")
+    print(" / /  / _` |_  / | | |  / /_)/ _` | | | |")
+    print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
+    print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
+    print("                |___/              |___/ ")
+    print("The laziest way to check your pay\n" + version +"\n\n\n")
 
-print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-print("   __                     ___            ")
-print("  / /  __ _ _____   _    / _ \__ _ _   _ ")
-print(" / /  / _` |_  / | | |  / /_)/ _` | | | |")
-print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
-print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
-print("                |___/              |___/ ")
-print("The laziest way to check your pay\n" + version +"\n\n\n")
+printLogo()
 
 if username == "firstname.lastname":
     print("#### ERROR - Default Login Details")
@@ -89,7 +100,7 @@ input_date = input("If you want to check a different fortnight \nEnter the start
 if input_date == "":
     input_date = current_fortnight.strftime("%Y%m%d")
     date_selected = True
-    #Set bultiple pays to false as you can't have multiple pays from most recent pay
+    #Set multiple pays to false as you can't have multiple pays from most recent pay
     multiple_pays = False
 
 #if they enter a date ensure the date given is the pay_fortnights list
@@ -138,7 +149,7 @@ else:
     number_of_days = 14
 #for debug purposes
 #number_of_days = 3
-print(multiple_pays)
+print("\nChecking multiple pays: " + str(multiple_pays))
 
 
 #             _               ___      
@@ -174,7 +185,7 @@ for day in range(number_of_days):
     shift_url = date_url + shift_date.strftime("%Y%m%d")
     driver.get(shift_url)
     time.sleep(GO_SLEEP_TIME)
-    print("\n Fetching: " + shift_url)
+    print("Fetching day " + str(day))
 
     #extract all shift data
     all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
@@ -512,6 +523,8 @@ driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.X
 
 #Debug
 
-input("Press enter to quit LazyPay.")
+printLogo()
+print("\n\n\nYour pay has been entered the lazy way.\n")
+input("Press enter to quit.")
 
 driver.close()
