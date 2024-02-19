@@ -1,3 +1,4 @@
+#from asyncio.windows_events import NULL
 from datetime import date
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -54,13 +55,16 @@ pay_fortnights = []
 #this is used for selecting the correct week in hyperchicken 
 fortnight_number = 0
 
+#Determines if you just calculate one pay or all pays since specified date
+multiple_pays = None
+
 #to calculate most recent go through dates until you reach current date
 #add all of the start dates to the pay_fortnights list
 while current_fortnight + datetime.timedelta(days=28) < today:
     current_fortnight = current_fortnight + datetime.timedelta(days=14)
     pay_fortnights.append(current_fortnight.strftime("%Y%m%d"))
 
-print("most recent fortnight was " + str(current_fortnight))
+print("The most recent fortnight was " + str(current_fortnight))
 print("If you want to check you pay for the most recent fortnight press Enter")
 input_date = input("If you want to check a different fortnight \nEnter the start date in the format YYYYMMDD\n")
 
@@ -68,6 +72,8 @@ input_date = input("If you want to check a different fortnight \nEnter the start
 if input_date == "":
     input_date = current_fortnight.strftime("%Y%m%d")
     date_selected = True
+    #Set bultiple pays to false as you can't have multiple pays from most recent pay
+    multiple_pays = False
 
 #if they enter a date ensure the date given is the pay_fortnights list
 #if it is set input_date to the given input
@@ -82,6 +88,30 @@ else:
         else:
             print("\nDate given was not the first day in a pay period\nPlease try again in the format YYYYMMDD")
             input_date = input()
+
+#Determine if you want multiple pays checked or just one
+time.sleep(0.2)
+
+print("###########################################")
+print("Fortnight date " + input_date + " selected.")
+print("###########################################")
+
+
+if multiple_pays == None:
+    time.sleep(1)
+
+    print("\nDo you wish to calculate just one fortnights pay \nor all fortnights since the specified date?\n")
+    time.sleep(1)
+    while True:
+        multiple_pays_input = input("To calculate a single fortnight pay press Enter. \nIf you wish to all pays since specified date type Y.\n")
+        if multiple_pays_input == "":
+            multiple_pays = False
+            break
+        elif multiple_pays_input in "yY":
+            multiple_pays = True
+            break
+        else:
+            print("\n Error Please Try Again")
 
 
 ###
