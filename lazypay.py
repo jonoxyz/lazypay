@@ -1,3 +1,4 @@
+#from asyncio.windows_events import NULL
 from datetime import date
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,7 +10,6 @@ from selenium.webdriver.support.ui import Select
 # typing in your sign on and off times is just too hard.
 # Visit lazypay.xyz
 
-
 #requirements
 #python 3.8 + https://www.python.org/downloads/
 #Selenium https://pypi.org/project/selenium/
@@ -17,17 +17,20 @@ from selenium.webdriver.support.ui import Select
 #Chrome Driver
 
 #font ogre
-#Insert LAZY PAY onto Pay Calculator
-
-
 
 
 #### User Variables
+
+#enter your metrogo login details
 username = ""
 password = ""
+
 #Chrome Webdriver Path
 #enter the install path of your chrome web driver
+#you should be able to leave emoty if webdriver is in the same folder as lazypay.py
 path = ""
+
+
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print("   __                     ___            ")
 print("  / /  __ _ _____   _    / _ \__ _ _   _ ")
@@ -35,57 +38,106 @@ print(" / /  / _` |_  / | | |  / /_)/ _` | | | |")
 print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
 print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
 print("                |___/              |___/ ")
-print("The laziest way to check your pay\n ultra pre Alpha version 0.001\n\n\n")
+print("The laziest way to check your pay\n ultra pre Alpha version 0.3\n\n\n")
 
 
 ########
+
 first_fortnight = datetime.date(2017, 11, 12)
 current_fortnight = first_fortnight
 today = datetime.date.today()
+
+#list of all pay fortnight start dates from first_fortnight to today
 pay_fortnights = []
-#fortnight is the number of fortnights ago this pay period was.
+
+#fortnight_number is the number of fortnights ago this pay period was.
 #current fortnight is 0
 #the previous fortnight would be 1
+#this is used for selecting the correct week in hyperchicken 
 fortnight_number = 0
 
+#Determines if you just calculate one pay or all pays since specified date
+multiple_pays = None
+
 #to calculate most recent go through dates until you reach current date
+#add all of the start dates to the pay_fortnights list
 while current_fortnight + datetime.timedelta(days=28) < today:
     current_fortnight = current_fortnight + datetime.timedelta(days=14)
     pay_fortnights.append(current_fortnight.strftime("%Y%m%d"))
-    #print(current_fortnight.strftime("%Y%m%d"))
 
-#print(current_fortnight)
-#print("####\n")
-print("most recent fortnight was " + str(current_fortnight))
+print("The most recent fortnight was " + str(current_fortnight))
 print("If you want to check you pay for the most recent fortnight press Enter")
-input_date = input("If you want to check a different fortnight enter the start date in the format YYYYMMDD\n")
+input_date = input("If you want to check a different fortnight \nEnter the start date in the format YYYYMMDD\n")
 
-#print(input_date == "")
+#if they just press enter
 if input_date == "":
     input_date = current_fortnight.strftime("%Y%m%d")
     date_selected = True
+    #Set bultiple pays to false as you can't have multiple pays from most recent pay
+    multiple_pays = False
 
+#if they enter a date ensure the date given is the pay_fortnights list
+#if it is set input_date to the given input
 else:
     date_selected = False
     while not date_selected:
+        print(input_date)
         if input_date in pay_fortnights:
             #print("Date " + input_date + " selected.")
             fortnight_number = len(pay_fortnights) - pay_fortnights.index(input_date) - 1
             break
         else:
-            #print("Date given was not the first day in a pay period\nPlease try again in the format YYYYMMDD")
+            print("\nDate given was not the first day in a pay period\nPlease try again in the format YYYYMMDD")
             input_date = input()
 
-#######    
+#Determine if you want multiple pays checked or just one
+time.sleep(0.2)
+
+print("###########################################")
+print("Fortnight date " + input_date + " selected.")
+print("###########################################")
 
 
-login_url = "https://go.metroapp.com.au/"
-date_url = "https://go.metroapp.com.au/#/sign-on/"
+if multiple_pays == None:
+    time.sleep(1)
+
+    print("\nDo you wish to calculate just one fortnights pay \nor all fortnights since the specified date?\n")
+    time.sleep(1)
+    while True:
+        multiple_pays_input = input("To calculate a single fortnight pay press Enter. \nIf you wish to all pays since specified date type Y.\n")
+        if multiple_pays_input == "":
+            multiple_pays = False
+            break
+        elif multiple_pays_input in "yY":
+            multiple_pays = True
+            break
+        else:
+            print("\n Error Please Try Again")
+
+#if multiple pays selected we need to scrape more days from metrogo
+number_of_days = 14 * (fortnight_number + 1)
+
+#for debug purposes
+#number_of_days = 3
+
+
+
+#             _               ___      
+#  /\/\   ___| |_ _ __ ___   / _ \___  
+# /    \ / _ \ __| '__/ _ \ / /_\/ _ \ 
+#/ /\/\ \  __/ |_| | | (_) / /_\\ (_) |
+#\/    \/\___|\__|_|  \___/\____/\___/ 
+#
 
 ###
+login_url = "https://go.metroapp.com.au/"
+date_url = "https://go.metroapp.com.au/#/sign-on/"
+###
 
-
+#initiate chrome driver
 driver = webdriver.Chrome(path)
+
+
 #first we log in
 driver.get(login_url)
 
@@ -93,33 +145,24 @@ driver.find_element("id", "login").send_keys(username)
 driver.find_element("id", "pass").send_keys(password)
 driver.find_element("id", "login-button").click()
 
+
 #Then navigate to desired date
-
-#driver.get(date_url)
-
-## Data to store
-# Sign On 
-# Sign Off
-# Wasted Meal
-# OJT
-# PH
-# DDO? Have to ask upfront if this is ddo fortnight
-
-###
-
-#sign_on = driver.find_element()
-
 shift_date = datetime.datetime(int(input_date[:4]), int(input_date[4:6]), int(input_date[6:]))
 shift_list = []
 
-for day in range(14):
+for day in range(number_of_days):
     #lookup webpage for shift date
     shift_url = date_url + shift_date.strftime("%Y%m%d")
     driver.get(shift_url)
-    time.sleep(1)
+    time.sleep(0.75)
+
+    #extract all shift data
     all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
-    #add one to the shift date
+    
+    #add one day to the shift date to be ready for the next lookup
     shift_date = shift_date + datetime.timedelta(days=1)
+
+    #Check if shift is a Non Worked Shift
     if "OFF" in all_data:
         shift_list.append({
         "type": "OFF",
@@ -136,6 +179,8 @@ for day in range(14):
         shift_list.append({
         "type": "Sick",
         })
+    
+
     else:
 
         ojt = True
@@ -167,18 +212,10 @@ for day in range(14):
             "wasted_meal": wasted_meal
             })
 
-
-
-
-
-#sign_on = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div/div[4]/div[2]").text
-#sign_off = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div/div[9]/div[2]").text
-#print("Sign on: ", sign_on)
-#print("Sign off: ", sign_off)
+########
 ojt = False
 wasted_meal = False
 
-#print("*******")
 all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
 #print(all_data)
 if "OJT" in all_data:
@@ -189,10 +226,13 @@ if "Wasted" in all_data:
 
 
 
-######
-####
-###
-##
+#                               ___ _     _      _              
+#  /\  /\_   _ _ __   ___ _ __ / __\ |__ (_) ___| | _____ _ __  
+# / /_/ / | | | '_ \ / _ \ '__/ /  | '_ \| |/ __| |/ / _ \ '_ \ 
+#/ __  /| |_| | |_) |  __/ | / /___| | | | | (__|   <  __/ | | |
+#\/ /_/  \__, | .__/ \___|_| \____/|_| |_|_|\___|_|\_\___|_| |_|
+#        |___/|_|                                               
+#
 # Enter data into Hyper chicken
 hyper_url = "https://hyperchicken.com/paycalc/"
 driver.get(hyper_url)
@@ -201,27 +241,30 @@ driver.get(hyper_url)
 Select(driver.find_element("id", "pay-grade")).select_by_visible_text('SPOT')
 driver.execute_script("updateGrade()")
 
+
 #Make hyperchicken look pretty
-driver.execute_script("arguments[0].style.backgroundColor = '#000';",driver.find_element(By.XPATH, "/html/body/ul"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
+def prettyChicken():
+    driver.execute_script("arguments[0].style.backgroundColor = '#000';",driver.find_element(By.XPATH, "/html/body/ul"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
 
-driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/ul/li[1]/sup"), "FULED BY LAZY PAY");
+    driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/ul/li[1]/sup"), "FULED BY LAZY PAY");
 
-driver.execute_script("arguments[0].style.fontFamily = 'monospace'; ",driver.find_element(By.XPATH, "/html/body/span"))
-driver.execute_script("arguments[0].style.textAlign = 'center'; ",driver.find_element(By.XPATH, "/html/body/span"))
+    driver.execute_script("arguments[0].style.fontFamily = 'monospace'; ",driver.find_element(By.XPATH, "/html/body/span"))
+    driver.execute_script("arguments[0].style.textAlign = 'center'; ",driver.find_element(By.XPATH, "/html/body/span"))
 
-driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/span"), "<pre>   __                     ___            <br />  / /  __ _ _____   _    / _ \__ _ _   _ <br /> / /  / _` |_  / | | |  / /_)/ _` | | | |<br /<br />/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |<br />\____/\__,_/___|\__, | \/    \__,_|\__, |<br />                |___/              |___/  </pre>")
+    driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/span"), "<pre>   __                     ___            <br />  / /  __ _ _____   _    / _ \__ _ _   _ <br /> / /  / _` |_  / | | |  / /_)/ _` | | | |<br /<br />/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |<br />\____/\__,_/___|\__, | \/    \__,_|\__, |<br />                  |___/              |___/  <br /><br /><br /><a href='https://lazypay.xyz/'>lazypay.xyz</a><br />The laziest way to check your pay.</pre>")
+    driver.execute_script("arguments[0].style.color = 'white'; ",driver.find_element(By.XPATH, "/html/body/span/pre/a"))
 
-
+prettyChicken()
 
 
 #Set correct fortnight
 time.sleep(1)
 driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[1]").click()
 for i in range(fortnight_number):
-    time.sleep(1)
+    time.sleep(0.05)
 
     #click back
     driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[1]").click()
@@ -246,7 +289,7 @@ xpath_lookup = [
 #function to add shift details 
 def addDetails():
     time.sleep(0.05)
-    x = xpath_lookup[day]
+    x = xpath_lookup[day % 14]
     driver.find_element(By.XPATH, x).click()
 
     if shift_list[day]["ojt"]:
@@ -260,16 +303,26 @@ def addDetails():
         driver.find_element(By.XPATH, x[:40] + str(int(x[40:-3]) + 2) + "]/a[2]").click()
 
     driver.find_element(By.XPATH, x).click()
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
 
-
-
+#counts the number of shifts entered so far in each fortnight
+#once you get to the end of the fortnight a new fortnight will be selected in hyper chicken
+shift_count = 0
 #This is where we enter data into hyperchicken for each shift
 for day in range(len(shift_list)):
     time.sleep(0.05)
+    if shift_count == 14:
+        shift_count = 0
+        driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[3]").click()
+        prettyChicken()
+        
+
+
 
 #    print(shift_list[day]["sign_on"])
     if shift_list[day]["type"] == "running":
-        if day == 0:
+        if day % 14 == 0:
             #Sun 1
             #enter sign on and sign off times
             driver.find_element("id", "sun1-start").send_keys(shift_list[day]["sign_on"])
@@ -278,7 +331,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 1:
+        if day % 14 == 1:
             #Mon 1
             #enter sign on and sign off times
             driver.find_element("id", "mon1-start").send_keys(shift_list[day]["sign_on"])
@@ -288,7 +341,7 @@ for day in range(len(shift_list)):
             addDetails()
             #driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[5]/div[12]/a").click()
 
-        if day == 2:
+        if day % 14 == 2:
             #Tue 1
             #enter sign on and sign off times
             driver.find_element("id", "tue1-start").send_keys(shift_list[day]["sign_on"])
@@ -298,7 +351,7 @@ for day in range(len(shift_list)):
  
             addDetails()
 
-        if day == 3:
+        if day % 14 == 3:
             #Wed 1
             #enter sign on and sign off times
             driver.find_element("id", "wed1-start").send_keys(shift_list[day]["sign_on"])
@@ -307,7 +360,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 4:
+        if day % 14 == 4:
             #Thu 1
             #enter sign on and sign off times
             driver.find_element("id", "thu1-start").send_keys(shift_list[day]["sign_on"])
@@ -316,7 +369,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 5:
+        if day % 14 == 5:
             #Fri 1
             #enter sign on and sign off times
             driver.find_element("id", "fri1-start").send_keys(shift_list[day]["sign_on"])
@@ -325,7 +378,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 6:
+        if day % 14 == 6:
             #Sat 1
             #enter sign on and sign off times
             driver.find_element("id", "sat1-start").send_keys(shift_list[day]["sign_on"])
@@ -334,7 +387,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 7:
+        if day % 14 == 7:
             #Sun 2
             #enter sign on and sign off times
             driver.find_element("id", "sun2-start").send_keys(shift_list[day]["sign_on"])
@@ -343,7 +396,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 8:
+        if day % 14 == 8:
             #Monday 2
             #enter sign on and sign off times
             driver.find_element("id", "mon2-start").send_keys(shift_list[day]["sign_on"])
@@ -352,7 +405,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 9:
+        if day % 14 == 9:
             #Tue 2
             #enter sign on and sign off times
             driver.find_element("id", "tue2-start").send_keys(shift_list[day]["sign_on"])
@@ -362,7 +415,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 10:
+        if day % 14 == 10:
             #Wed 2
             #enter sign on and sign off times
             driver.find_element("id", "wed2-start").send_keys(shift_list[day]["sign_on"])
@@ -372,7 +425,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 11:
+        if day % 14 == 11:
             #Thu 2
             #enter sign on and sign off times
             driver.find_element("id", "thu2-start").send_keys(shift_list[day]["sign_on"])
@@ -382,7 +435,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 12:
+        if day % 14 == 12:
             #Fri 2
             #enter sign on and sign off times
             driver.find_element("id", "fri2-start").send_keys(shift_list[day]["sign_on"])
@@ -391,7 +444,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 13:
+        if day % 14 == 13:
             #Sat 2
             #enter sign on and sign off times
             driver.find_element("id", "sat2-start").send_keys(shift_list[day]["sign_on"])
@@ -399,6 +452,13 @@ for day in range(len(shift_list)):
 
             #edit shift details
             addDetails()
+    shift_count += 1
 
 
-input("Press enter to exit.")
+driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.XPATH, "/html/body/span/pre"))
+
+input("Press enter to quit LazyPay.")
+
+
+
+driver.close()
