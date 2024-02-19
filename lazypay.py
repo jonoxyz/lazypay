@@ -21,6 +21,11 @@ from selenium.webdriver.support.ui import Select
 
 #### User Variables
 
+#Crashes may occur if your connection is too slow. 
+#Increase GO_SLEEP_TIME to pause for longer on each shift
+#This will ensure the page fully loads and may reduce crashing
+GO_SLEEP_TIME = 1
+
 #enter your metrogo login details
 username = ""
 password = ""
@@ -157,7 +162,8 @@ for day in range(number_of_days):
     #lookup webpage for shift date
     shift_url = date_url + shift_date.strftime("%Y%m%d")
     driver.get(shift_url)
-    time.sleep(0.75)
+    time.sleep(GO_SLEEP_TIME)
+    print("\n Fetching: " + shift_url)
 
     #extract all shift data
     all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
@@ -168,6 +174,7 @@ for day in range(number_of_days):
     #Check if shift is a Non Worked Shift
     if "OFF" in all_data:
         shift_list.append({
+        "paid": False,
         "type": "OFF",
         })
     elif "DDO" in all_data:
@@ -252,8 +259,8 @@ if "OJT" in all_data:
 
 if "Wasted" in all_data:
     wasted_meal = True
-
-
+print("\n\nprinting shift list")
+print(shift_list)
 
 #                               ___ _     _      _              
 #  /\  /\_   _ _ __   ___ _ __ / __\ |__ (_) ___| | _____ _ __  
@@ -290,7 +297,7 @@ prettyChicken()
 
 
 #Set correct fortnight
-time.sleep(1)
+time.sleep(0.2)
 driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[1]").click()
 for i in range(fortnight_number):
     time.sleep(0.05)
@@ -343,6 +350,7 @@ def addDetails():
 shift_count = 0
 #This is where we enter data into hyperchicken for each shift
 for day in range(len(shift_list)):
+    print("Entering Shift: " + str(shift_list[day]) )
     time.sleep(0.05)
     if shift_count == 14:
         shift_count = 0
