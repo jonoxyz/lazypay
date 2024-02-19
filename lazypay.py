@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 import time
 import datetime 
 from selenium.webdriver.support.ui import Select
-#version 0.2
 
 #requirements
 #python 3.8 + https://www.python.org/downloads/
@@ -18,18 +17,16 @@ from selenium.webdriver.support.ui import Select
 
 #### User Variables
 
-#enter your metro login details
+#enter your metrogo login details
 username = ""
 password = ""
+
 #Chrome Webdriver Path
 #enter the install path of your chrome web driver
 #you should be able to leave emoty if webdriver is in the same folder as lazypay.py
 path = ""
 
-
-
-
-
+number_of_days = 14
 
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
@@ -43,53 +40,59 @@ print("The laziest way to check your pay\n ultra pre Alpha version 0.1\n\n\n")
 
 
 ########
+
 first_fortnight = datetime.date(2017, 11, 12)
 current_fortnight = first_fortnight
 today = datetime.date.today()
+
+#list of all pay fortnight start dates from first_fortnight to today
 pay_fortnights = []
-#fortnight is the number of fortnights ago this pay period was.
+
+#fortnight_number is the number of fortnights ago this pay period was.
 #current fortnight is 0
 #the previous fortnight would be 1
+#this is used for selecting the correct week in hyperchicken 
 fortnight_number = 0
 
 #to calculate most recent go through dates until you reach current date
+#add all of the start dates to the pay_fortnights list
 while current_fortnight + datetime.timedelta(days=28) < today:
     current_fortnight = current_fortnight + datetime.timedelta(days=14)
     pay_fortnights.append(current_fortnight.strftime("%Y%m%d"))
-    #print(current_fortnight.strftime("%Y%m%d"))
 
-#print(current_fortnight)
-#print("####\n")
 print("most recent fortnight was " + str(current_fortnight))
 print("If you want to check you pay for the most recent fortnight press Enter")
 input_date = input("If you want to check a different fortnight \nEnter the start date in the format YYYYMMDD\n")
 
-#print(input_date == "")
+#if they just press enter
 if input_date == "":
     input_date = current_fortnight.strftime("%Y%m%d")
     date_selected = True
 
+#if they enter a date ensure the date given is the pay_fortnights list
+#if it is set input_date to the given input
 else:
     date_selected = False
     while not date_selected:
+        print(input_date)
         if input_date in pay_fortnights:
             #print("Date " + input_date + " selected.")
             fortnight_number = len(pay_fortnights) - pay_fortnights.index(input_date) - 1
             break
         else:
-            #print("Date given was not the first day in a pay period\nPlease try again in the format YYYYMMDD")
+            print("\nDate given was not the first day in a pay period\nPlease try again in the format YYYYMMDD")
             input_date = input()
 
-#######    
-
-
-login_url = "https://go.metroapp.com.au/"
-date_url = "https://go.metroapp.com.au/#/sign-on/"
 
 ###
+login_url = "https://go.metroapp.com.au/"
+date_url = "https://go.metroapp.com.au/#/sign-on/"
+###
 
-
+#initiate chrome driver
 driver = webdriver.Chrome(path)
+
+
 #first we log in
 driver.get(login_url)
 
@@ -97,23 +100,24 @@ driver.find_element("id", "login").send_keys(username)
 driver.find_element("id", "pass").send_keys(password)
 driver.find_element("id", "login-button").click()
 
+
 #Then navigate to desired date
-
-
-###
-
-
 shift_date = datetime.datetime(int(input_date[:4]), int(input_date[4:6]), int(input_date[6:]))
 shift_list = []
 
-for day in range(2):
+for day in range(number_of_days):
     #lookup webpage for shift date
     shift_url = date_url + shift_date.strftime("%Y%m%d")
     driver.get(shift_url)
     time.sleep(1)
+
+    #extract all shift data
     all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
-    #add one to the shift date
+    
+    #add one day to the shift date to be ready for the next lookup
     shift_date = shift_date + datetime.timedelta(days=1)
+
+    #Check if shift is a Non Worked Shift
     if "OFF" in all_data:
         shift_list.append({
         "type": "OFF",
@@ -130,6 +134,8 @@ for day in range(2):
         shift_list.append({
         "type": "Sick",
         })
+    
+
     else:
 
         ojt = True
@@ -160,8 +166,8 @@ for day in range(2):
             "ojt": ojt,
             "wasted_meal": wasted_meal
             })
-########
 
+########
 ojt = False
 wasted_meal = False
 
