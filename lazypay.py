@@ -115,11 +115,14 @@ if multiple_pays == None:
             print("\n Error Please Try Again")
 
 #if multiple pays selected we need to scrape more days from metrogo
-number_of_days = 14 * (fortnight_number + 1)
 
+if multiple_pays:
+    number_of_days = 14 * (fortnight_number + 1)
+else:
+    number_of_days = 14
 #for debug purposes
 #number_of_days = 3
-
+print(multiple_pays)
 
 
 #             _               ___      
@@ -169,15 +172,40 @@ for day in range(number_of_days):
         })
     elif "DDO" in all_data:
         shift_list.append({
+        "paid": True,
         "type": "DDO",
+        "sign_on": "",
+        "sign_off": "",
+        "ojt": False,
+        "wasted_meal": False
         })
+    
     elif "PH" in all_data:
         shift_list.append({
+        "paid": True,
         "type": "PH",
+        "sign_on": "",
+        "sign_off": "",
+        "ojt": False,
+        "wasted_meal": False
         })
     elif "Sick" in all_data:
         shift_list.append({
+        "paid": True,
         "type": "Sick",
+        "sign_on": "",
+        "sign_off": "",
+        "ojt": False,
+        "wasted_meal": False
+        })
+    elif "AL" in all_data:
+        shift_list.append({
+        "paid": True,
+        "type": "AL",
+        "sign_on": "",
+        "sign_off": "",
+        "ojt": False,
+        "wasted_meal": False
         })
     
 
@@ -205,6 +233,7 @@ for day in range(number_of_days):
 
         #add to shift list
         shift_list.append({
+            "paid": True,
             "type": "running",
             "sign_on": sign_on[:2] + sign_on[3:],
             "sign_off": sign_off[:2] + sign_off[3:],
@@ -301,6 +330,9 @@ def addDetails():
     
     if shift_list[day]["type"] == "DDO":
         driver.find_element(By.XPATH, x[:40] + str(int(x[40:-3]) + 2) + "]/a[2]").click()
+    
+    if shift_list[day]["type"] == "AL":
+        driver.find_element(By.XPATH, x[:40] + str(int(x[40:-3]) + 2) + "]/a[5]").click()
 
     driver.find_element(By.XPATH, x).click()
     driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
@@ -321,7 +353,7 @@ for day in range(len(shift_list)):
 
 
 #    print(shift_list[day]["sign_on"])
-    if shift_list[day]["type"] == "running":
+    if shift_list[day]["paid"]:
         if day % 14 == 0:
             #Sun 1
             #enter sign on and sign off times
@@ -453,9 +485,16 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
     shift_count += 1
+    #exit if only calculating one fortnight
+    if shift_count == 14 and multiple_pays == False:
+        break
+        
 
 
 driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.XPATH, "/html/body/span/pre"))
+
+#Debug
+print(shift_list)
 
 input("Press enter to quit LazyPay.")
 
