@@ -5,10 +5,15 @@ from selenium.webdriver.common.by import By
 import time
 import datetime 
 from selenium.webdriver.support.ui import Select
+import sys
 
+#import login details
+from config import *
+
+version = "Beta 0.1"
 # lazypay built by Jonathan Edwards because 
 # typing in your sign on and off times is just too hard.
-# Visit lazypay.xyz
+# Visit lhttps://www.lazypay.xyz
 
 #requirements
 #python 3.8 + https://www.python.org/downloads/
@@ -24,11 +29,13 @@ from selenium.webdriver.support.ui import Select
 #Crashes may occur if your connection is too slow. 
 #Increase GO_SLEEP_TIME to pause for longer on each shift
 #This will ensure the page fully loads and may reduce crashing
-GO_SLEEP_TIME = 1
+GO_SLEEP_TIME = loading_speed
 
 #enter your metrogo login details
-username = ""
-password = ""
+#these are not needed now due to credentials being stored
+#in the config.py file.
+#username = ""
+#password = ""
 
 #Chrome Webdriver Path
 #enter the install path of your chrome web driver
@@ -43,8 +50,12 @@ print(" / /  / _` |_  / | | |  / /_)/ _` | | | |")
 print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
 print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
 print("                |___/              |___/ ")
-print("The laziest way to check your pay\n ultra pre Alpha version 0.3\n\n\n")
+print("The laziest way to check your pay\n" + version +"\n\n\n")
 
+if username == "firstname.lastname":
+    print("#### ERROR - Default Login Details")
+    print("Please update your login details in the config.py file.\n\n\n")
+    sys.exit()
 
 ########
 
@@ -497,15 +508,10 @@ for day in range(len(shift_list)):
     if shift_count == 14 and multiple_pays == False:
         break
         
-
-
 driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.XPATH, "/html/body/span/pre"))
 
 #Debug
-print(shift_list)
 
 input("Press enter to quit LazyPay.")
-
-
 
 driver.close()
