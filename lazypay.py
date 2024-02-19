@@ -6,6 +6,7 @@ import time
 import datetime 
 from selenium.webdriver.support.ui import Select
 
+
 #requirements
 #python 3.8 + https://www.python.org/downloads/
 #Selenium https://pypi.org/project/selenium/
@@ -27,8 +28,6 @@ password = ""
 #you should be able to leave emoty if webdriver is in the same folder as lazypay.py
 path = ""
 
-number_of_days = 14
-
 
 print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 print("   __                     ___            ")
@@ -37,7 +36,7 @@ print(" / /  / _` |_  / | | |  / /_)/ _` | | | |")
 print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
 print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
 print("                |___/              |___/ ")
-print("The laziest way to check your pay\n ultra pre Alpha version 0.1\n\n\n")
+print("The laziest way to check your pay\n ultra pre Alpha version 0.3\n\n\n")
 
 
 ########
@@ -113,6 +112,20 @@ if multiple_pays == None:
         else:
             print("\n Error Please Try Again")
 
+#if multiple pays selected we need to scrape more days from metrogo
+number_of_days = 14 * (fortnight_number + 1)
+
+#for debug purposes
+#number_of_days = 3
+
+
+
+#             _               ___      
+#  /\/\   ___| |_ _ __ ___   / _ \___  
+# /    \ / _ \ __| '__/ _ \ / /_\/ _ \ 
+#/ /\/\ \  __/ |_| | | (_) / /_\\ (_) |
+#\/    \/\___|\__|_|  \___/\____/\___/ 
+#
 
 ###
 login_url = "https://go.metroapp.com.au/"
@@ -139,7 +152,7 @@ for day in range(number_of_days):
     #lookup webpage for shift date
     shift_url = date_url + shift_date.strftime("%Y%m%d")
     driver.get(shift_url)
-    time.sleep(1)
+    time.sleep(0.75)
 
     #extract all shift data
     all_data = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[3]/div[2]/div/div/div").text
@@ -211,11 +224,13 @@ if "Wasted" in all_data:
 
 
 
-######
-####
-###
-##
-
+#                               ___ _     _      _              
+#  /\  /\_   _ _ __   ___ _ __ / __\ |__ (_) ___| | _____ _ __  
+# / /_/ / | | | '_ \ / _ \ '__/ /  | '_ \| |/ __| |/ / _ \ '_ \ 
+#/ __  /| |_| | |_) |  __/ | / /___| | | | | (__|   <  __/ | | |
+#\/ /_/  \__, | .__/ \___|_| \____/|_| |_|_|\___|_|\_\___|_| |_|
+#        |___/|_|                                               
+#
 # Enter data into Hyper chicken
 hyper_url = "https://hyperchicken.com/paycalc/"
 driver.get(hyper_url)
@@ -226,20 +241,21 @@ driver.execute_script("updateGrade()")
 
 
 #Make hyperchicken look pretty
-driver.execute_script("arguments[0].style.backgroundColor = '#000';",driver.find_element(By.XPATH, "/html/body/ul"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
-driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
+def prettyChicken():
+    driver.execute_script("arguments[0].style.backgroundColor = '#000';",driver.find_element(By.XPATH, "/html/body/ul"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
+    driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
 
-driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/ul/li[1]/sup"), "FULED BY LAZY PAY");
+    driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/ul/li[1]/sup"), "FULED BY LAZY PAY");
 
-driver.execute_script("arguments[0].style.fontFamily = 'monospace'; ",driver.find_element(By.XPATH, "/html/body/span"))
-driver.execute_script("arguments[0].style.textAlign = 'center'; ",driver.find_element(By.XPATH, "/html/body/span"))
+    driver.execute_script("arguments[0].style.fontFamily = 'monospace'; ",driver.find_element(By.XPATH, "/html/body/span"))
+    driver.execute_script("arguments[0].style.textAlign = 'center'; ",driver.find_element(By.XPATH, "/html/body/span"))
 
-driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/span"), "<pre>   __                     ___            <br />  / /  __ _ _____   _    / _ \__ _ _   _ <br /> / /  / _` |_  / | | |  / /_)/ _` | | | |<br /<br />/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |<br />\____/\__,_/___|\__, | \/    \__,_|\__, |<br />                  |___/              |___/  <br /><br /><br /><a href='https://lazypay.xyz/'>lazypay.xyz</a><br />The laziest way to check your pay.</pre>")
-driver.execute_script("arguments[0].style.color = 'white'; ",driver.find_element(By.XPATH, "/html/body/span/pre/a"))
+    driver.execute_script("arguments[0].innerHTML = arguments[1]", driver.find_element(By.XPATH, "/html/body/span"), "<pre>   __                     ___            <br />  / /  __ _ _____   _    / _ \__ _ _   _ <br /> / /  / _` |_  / | | |  / /_)/ _` | | | |<br /<br />/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |<br />\____/\__,_/___|\__, | \/    \__,_|\__, |<br />                  |___/              |___/  <br /><br /><br /><a href='https://lazypay.xyz/'>lazypay.xyz</a><br />The laziest way to check your pay.</pre>")
+    driver.execute_script("arguments[0].style.color = 'white'; ",driver.find_element(By.XPATH, "/html/body/span/pre/a"))
 
-
+prettyChicken()
 
 
 #Set correct fortnight
@@ -271,7 +287,7 @@ xpath_lookup = [
 #function to add shift details 
 def addDetails():
     time.sleep(0.05)
-    x = xpath_lookup[day]
+    x = xpath_lookup[day % 14]
     driver.find_element(By.XPATH, x).click()
 
     if shift_list[day]["ojt"]:
@@ -288,14 +304,23 @@ def addDetails():
     driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
     driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div"))
 
-
+#counts the number of shifts entered so far in each fortnight
+#once you get to the end of the fortnight a new fortnight will be selected in hyper chicken
+shift_count = 0
 #This is where we enter data into hyperchicken for each shift
 for day in range(len(shift_list)):
     time.sleep(0.05)
+    if shift_count == 14:
+        shift_count = 0
+        driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[3]").click()
+        prettyChicken()
+        
+
+
 
 #    print(shift_list[day]["sign_on"])
     if shift_list[day]["type"] == "running":
-        if day == 0:
+        if day % 14 == 0:
             #Sun 1
             #enter sign on and sign off times
             driver.find_element("id", "sun1-start").send_keys(shift_list[day]["sign_on"])
@@ -304,7 +329,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 1:
+        if day % 14 == 1:
             #Mon 1
             #enter sign on and sign off times
             driver.find_element("id", "mon1-start").send_keys(shift_list[day]["sign_on"])
@@ -314,7 +339,7 @@ for day in range(len(shift_list)):
             addDetails()
             #driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[5]/div[12]/a").click()
 
-        if day == 2:
+        if day % 14 == 2:
             #Tue 1
             #enter sign on and sign off times
             driver.find_element("id", "tue1-start").send_keys(shift_list[day]["sign_on"])
@@ -324,7 +349,7 @@ for day in range(len(shift_list)):
  
             addDetails()
 
-        if day == 3:
+        if day % 14 == 3:
             #Wed 1
             #enter sign on and sign off times
             driver.find_element("id", "wed1-start").send_keys(shift_list[day]["sign_on"])
@@ -333,7 +358,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 4:
+        if day % 14 == 4:
             #Thu 1
             #enter sign on and sign off times
             driver.find_element("id", "thu1-start").send_keys(shift_list[day]["sign_on"])
@@ -342,7 +367,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 5:
+        if day % 14 == 5:
             #Fri 1
             #enter sign on and sign off times
             driver.find_element("id", "fri1-start").send_keys(shift_list[day]["sign_on"])
@@ -351,7 +376,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 6:
+        if day % 14 == 6:
             #Sat 1
             #enter sign on and sign off times
             driver.find_element("id", "sat1-start").send_keys(shift_list[day]["sign_on"])
@@ -360,7 +385,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 7:
+        if day % 14 == 7:
             #Sun 2
             #enter sign on and sign off times
             driver.find_element("id", "sun2-start").send_keys(shift_list[day]["sign_on"])
@@ -369,7 +394,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 8:
+        if day % 14 == 8:
             #Monday 2
             #enter sign on and sign off times
             driver.find_element("id", "mon2-start").send_keys(shift_list[day]["sign_on"])
@@ -378,7 +403,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 9:
+        if day % 14 == 9:
             #Tue 2
             #enter sign on and sign off times
             driver.find_element("id", "tue2-start").send_keys(shift_list[day]["sign_on"])
@@ -388,7 +413,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 10:
+        if day % 14 == 10:
             #Wed 2
             #enter sign on and sign off times
             driver.find_element("id", "wed2-start").send_keys(shift_list[day]["sign_on"])
@@ -398,7 +423,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 11:
+        if day % 14 == 11:
             #Thu 2
             #enter sign on and sign off times
             driver.find_element("id", "thu2-start").send_keys(shift_list[day]["sign_on"])
@@ -408,7 +433,7 @@ for day in range(len(shift_list)):
             addDetails()
 
 
-        if day == 12:
+        if day % 14 == 12:
             #Fri 2
             #enter sign on and sign off times
             driver.find_element("id", "fri2-start").send_keys(shift_list[day]["sign_on"])
@@ -417,7 +442,7 @@ for day in range(len(shift_list)):
             #edit shift details
             addDetails()
 
-        if day == 13:
+        if day % 14 == 13:
             #Sat 2
             #enter sign on and sign off times
             driver.find_element("id", "sat2-start").send_keys(shift_list[day]["sign_on"])
@@ -425,8 +450,13 @@ for day in range(len(shift_list)):
 
             #edit shift details
             addDetails()
+    shift_count += 1
 
+
+driver.execute_script("arguments[0].scrollIntoView();", driver.find_element(By.XPATH, "/html/body/span/pre"))
 
 input("Press enter to quit LazyPay.")
+
+
 
 driver.close()
