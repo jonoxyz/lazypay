@@ -12,7 +12,7 @@ import sys
 #import login details
 from config import *
 #for testing
-from configtest import *
+#from configtest import *
 
 
 version = "Beta 0.1"
