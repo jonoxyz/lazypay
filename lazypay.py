@@ -175,6 +175,13 @@ driver.find_element("id", "login").send_keys(username)
 driver.find_element("id", "pass").send_keys(password)
 driver.find_element("id", "login-button").click()
 
+#check login details were correct
+time.sleep(GO_SLEEP_TIME)
+if str(driver.current_url) == "https://go.metroapp.com.au/#/login":
+    print("You have entered the wrong username and password.\nPlease update config.py with your correct login details.")
+    sys.exit()
+
+input("Press enter to quit.")
 
 #Then navigate to desired date
 shift_date = datetime.datetime(int(input_date[:4]), int(input_date[4:6]), int(input_date[6:]))
