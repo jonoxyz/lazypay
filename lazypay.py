@@ -12,7 +12,7 @@ import sys
 #import login details
 from config import *
 #for testing
-from configtest import *
+#from configtest import *
 
 
 version = "Beta 0.1"
@@ -63,6 +63,7 @@ def printLogo():
 
 printLogo()
 
+#Ensure username & password have been updated
 if username == "firstname.lastname":
     print("#### ERROR - Default Login Details")
     print("Please update your login details in the config.py file.\n\n\n")
@@ -181,7 +182,6 @@ if str(driver.current_url) == "https://go.metroapp.com.au/#/login":
     print("You have entered the wrong username and password.\nPlease update config.py with your correct login details.")
     sys.exit()
 
-input("Press enter to quit.")
 
 #Then navigate to desired date
 shift_date = datetime.datetime(int(input_date[:4]), int(input_date[4:6]), int(input_date[6:]))
@@ -379,7 +379,7 @@ def addDetails():
 shift_count = 0
 #This is where we enter data into hyperchicken for each shift
 for day in range(len(shift_list)):
-    print("Entering Shift: " + str(shift_list[day]) )
+    print("Entering Shift " + str(day) + " : " + str(shift_list[day]) )
     time.sleep(0.05)
     if shift_count == 14:
         shift_count = 0
