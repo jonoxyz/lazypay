@@ -216,10 +216,10 @@ for day in range(number_of_days):
         "ojt": False,
         "wasted_meal": False
         })
-    elif "Sick" in all_data:
+    elif "Absent" in all_data:
         shift_list.append({
         "paid": True,
-        "type": "Sick",
+        "type": "sick",
         "sign_on": "",
         "sign_off": "",
         "ojt": False,
@@ -364,6 +364,9 @@ def addDetails():
     
     if shift_list[day]["type"] == "AL":
         driver.find_element(By.XPATH, x[:40] + str(int(x[40:-3]) + 2) + "]/a[5]").click()
+
+    if shift_list[day]["type"] == "sick":
+        driver.find_element(By.XPATH, x[:40] + str(int(x[40:-3]) + 2) + "]/a[4]").click()
 
     driver.find_element(By.XPATH, x).click()
     driver.execute_script("arguments[0].style.backgroundColor = '#000'; ",driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div"))
