@@ -3,3 +3,4 @@ configtest.py
 __pycache__/
 Standalone/.DS_Store
 .DS_Store
+**/.DS_Store
