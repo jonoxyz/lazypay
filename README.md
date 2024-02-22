@@ -77,7 +77,7 @@ Now that you have the prerequisites in place, follow these steps to run Lazy Pay
 3. Run the lazypay.py script using one of the following commands:
 
    - On macOS:
-     ```bash
+     ```
      python3 lazypay.py
      ```
 
