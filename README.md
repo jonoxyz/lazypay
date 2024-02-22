@@ -1,4 +1,5 @@
-# How to run Lazy Pay
+# Lazy Pay
+Lazy Pay was developed by Jonathan Edwards to automate the process of calculating your pay with the [HyperChicken](https://hyperchicken.com/paycalc/) pay calculator (Developed by Petar Stankovic).
 ## Download Lazy Pay
 
 There are two files required to run Lazy Pay. 
