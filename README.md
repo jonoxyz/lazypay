@@ -1,4 +1,4 @@
-# Getting Started with LazyPay
+# How to run Lazy Pay
 ## Download Lazy Pay
 
 There are two files required to run Lazy Pay. 
