@@ -1,6 +1,3 @@
-# lazypay
-The laziest way to check your pay
-
 # Getting Started with LazyPay
 ## Download Lazy Pay
 
@@ -21,6 +18,7 @@ Before running lazypay.py, make sure you have the following prerequisites instal
      ```bash
      python3 --version
      ```
+
      If you see a version number, you can use `python3` instead of `python` in the commands below.
 
    - On Windows, you can use either `python` or `py` as the command. To check your Python version, open a command prompt and run:
