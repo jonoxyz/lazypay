@@ -13,7 +13,7 @@ from config import *
 #from configtest import *
 
 
-version = "Beta 0.1"
+version = "Vaersion 1.0"
 # Lazypay built by Jonathan Edwards because 
 # typing in your sign on and off times is just too hard.
 # Visit https://www.lazypay.xyz
@@ -51,7 +51,8 @@ def printLogo():
     print("/ /__| (_| |/ /| |_| | / ___/ (_| | |_| |")
     print("\____/\__,_/___|\__, | \/    \__,_|\__, |")
     print("                |___/              |___/ ")
-    print("The laziest way to check your pay\n" + version +"\n\n\n")
+    print("The laziest way to check your pay\n" + version +"\nVisit https://www.lazypay.xyz\n\n\n")
+
 
 printLogo()
 
