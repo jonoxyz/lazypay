@@ -31,7 +31,7 @@ Before running lazypay.py, make sure you have the following prerequisites instal
      If you see a version number, you can use `py` instead of `python` in the commands below.
 
 2. **Selenium for Python**: Install the Selenium library for Python. If you have Python 3.x, use the following command:
-Note If you don't have `pip` installed, you can you will need first to get `pip` with the following commands:
+Note If you don't have `pip` installed, you will need first to get `pip` with the following commands:
 
    - On macOS:
      ```bash

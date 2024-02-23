@@ -88,7 +88,7 @@ while current_fortnight + datetime.timedelta(days=28) < today:
     pay_fortnights.append(current_fortnight.strftime("%Y%m%d"))
 
 print("The most recent fortnight was " + str(current_fortnight))
-print("If you want to check you pay for the most recent fortnight press Enter")
+print("If you want to check your pay for the most recent fortnight press Enter")
 input_date = input("If you want to check a different fortnight \nEnter the start date in the format YYYYMMDD\n")
 
 # If they just press enter
