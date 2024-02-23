@@ -217,7 +217,7 @@ for day in range(number_of_days):
         "ojt": False,
         "wasted_meal": False
         })
-    elif "Absent" in all_data:
+    elif "Absent" in all_data or "SICK" in all_data:
         shift_list.append({
         "paid": True,
         "type": "sick",
