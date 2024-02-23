@@ -7,7 +7,7 @@ Lazy Pay was developed by Jonathan Edwards to automate the process of collecting
 There are two files required to run Lazy Pay. 
 Download these files from GitHub into a folder on your computer.
 	[lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py)
-  
+
 	[config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py)
 
 Once these files are downloaded use a text editor to update config.py and add your login details.
