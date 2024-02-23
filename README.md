@@ -3,12 +3,13 @@
 
 Lazy Pay was developed by Jonathan Edwards to automate the process of collecting shift details from MetroGo and calculating your pay with the [HyperChicken](https://hyperchicken.com/paycalc/) pay calculator (Developed by Petar Stankovic).
 ## Download Lazy Pay
+You can find and download the latest release of Lazy Pay [here](https://github.com/jonoxyz/lazypay/releases).
+The release contains a zip file for both Windows and Mac.
+The Zip contains the two python scripts needed to run Lazy Pay as well as the chrome driver for the latest version of chrome at time of release (Version: `122.0.6261.69`)
 
-There are two files required to run Lazy Pay. 
-Download these files from GitHub into a folder on your computer.
-[lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py) and [config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py).
+Once these files are downloaded and extracted use a text editor to update config.py and add your login details.
 
-Once these files are downloaded use a text editor to update config.py and add your login details.
+Alternatively you can download the two python scripts ([lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py) and [config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py)) and the appropriate version of the chrome driver individually.
 
 ## Prerequisites
 
@@ -57,7 +58,7 @@ Once  `pip` is installed you can get Selenium with the following commands:
 
 3. **Google Chrome**: Download and install the latest version of Google Chrome from [chrome.google.com](https://www.google.com/chrome/).
 
-4. **ChromeDriver**: Download the appropriate version of ChromeDriver for your operating system from [chromedriver.chromium.org](https://sites.google.com/chromium.org/driver/downloads). Ensure that the ChromeDriver version matches your installed Chrome version.
+4. **ChromeDriver**: The release zip file comes with ChromeDriver (Version: `122.0.6261.69`) however if you did not download the zip or have a different version of chrome installed you will need to download the appropriate version of ChromeDriver for your operating system from [chromedriver.chromium.org](https://sites.google.com/chromium.org/driver/downloads). Ensure that the ChromeDriver version matches your installed Chrome version.
 
    - To find your version of Google Chrome, open Chrome and click on the three vertical dots in the top-right corner.
    - From the dropdown menu, hover over "Help," and then click on "About Google Chrome."

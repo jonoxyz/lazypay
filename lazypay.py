@@ -13,7 +13,7 @@ from config import *
 #from configtest import *
 
 
-version = "Vaersion 1.0"
+version = "Version 1.0"
 # Lazypay built by Jonathan Edwards because 
 # typing in your sign on and off times is just too hard.
 # Visit https://www.lazypay.xyz
