@@ -1,4 +1,5 @@
 # Lazy Pay
+[LazyPay.xyz](https://lazypay.xyz/)
 Lazy Pay was developed by Jonathan Edwards to automate the process of collecting shift details from MetroGo and calculating your pay with the [HyperChicken](https://hyperchicken.com/paycalc/) pay calculator (Developed by Petar Stankovic).
 ## Download Lazy Pay
 
