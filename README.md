@@ -1,11 +1,13 @@
 # Lazy Pay
 [LazyPay.xyz](https://lazypay.xyz/)
+
 Lazy Pay was developed by Jonathan Edwards to automate the process of collecting shift details from MetroGo and calculating your pay with the [HyperChicken](https://hyperchicken.com/paycalc/) pay calculator (Developed by Petar Stankovic).
 ## Download Lazy Pay
 
 There are two files required to run Lazy Pay. 
 Download these files from GitHub into a folder on your computer.
 	[lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py)
+  
 	[config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py)
 
 Once these files are downloaded use a text editor to update config.py and add your login details.
