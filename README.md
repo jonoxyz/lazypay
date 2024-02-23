@@ -6,7 +6,7 @@ Lazy Pay was developed by Jonathan Edwards to automate the process of collecting
 
 There are two files required to run Lazy Pay. 
 Download these files from GitHub into a folder on your computer.
-[lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py) and [config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py)
+[lazypay.py](https://github.com/jonoxyz/lazypay/blob/main/lazypay.py) and [config.py](https://github.com/jonoxyz/lazypay/blob/main/config.py).
 
 Once these files are downloaded use a text editor to update config.py and add your login details.
 
@@ -66,7 +66,7 @@ Once  `pip` is installed you can get Selenium with the following commands:
 
 1. After downloading ChromeDriver, extract the archive to obtain the `chromedriver.exe` (Windows), `chromedriver` (macOS) executable.
 
-2. Save the `chromedriver.exe` or `chromedriver` executable in the same directory as the Python scripts you downloaded and saved from GitHub.
+2. Save the `chromedriver.exe` or `chromedriver` executable in the same directory as the lazypay.py and config.py Python scripts you downloaded and saved from GitHub.
 
 ## Running the Script
 
@@ -91,6 +91,6 @@ Now that you have the prerequisites in place, follow these steps to run Lazy Pay
 ## Troubleshooting
 
 - Just try running the script again. Sometimes lazypay.py crashes on the first run.
-- If you experience crashing it may be due to a slow network speed. It may help to increase the value of `loading_speed `in config.py.
+- If you experience crashing it may be due to a slow network speed. It may help to increase the value of `loading_speed` in config.py.
 - If you encounter any issues, ensure that ChromeDriver is the correct version for your Chrome installation.
 - Make sure the `chromedriver.exe` or `chromedriver` executable is in the same directory as your Python script.
