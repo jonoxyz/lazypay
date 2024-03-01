@@ -323,7 +323,7 @@ prettyChicken()
 
 # Set correct fortnight in Hyperchicken
 time.sleep(0.2)
-driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[1]").click()
+#driver.find_element(By.XPATH, "/html/body/div[2]/div[1]/div/div[3]/span[1]").click()
 for i in range(fortnight_number):
     time.sleep(0.05)
 
